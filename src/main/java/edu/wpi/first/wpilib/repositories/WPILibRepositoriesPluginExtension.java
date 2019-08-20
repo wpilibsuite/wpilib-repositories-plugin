@@ -7,7 +7,6 @@ import org.gradle.api.Project;
 import org.gradle.api.artifacts.repositories.MavenArtifactRepository;
 import org.gradle.api.provider.Property;
 import org.gradle.api.publish.PublishingExtension;
-import org.gradle.api.publish.maven.plugins.MavenPublishPlugin;
 
 public class WPILibRepositoriesPluginExtension {
 
@@ -19,7 +18,7 @@ public class WPILibRepositoriesPluginExtension {
     private final Project m_project;
 
     @Inject
-    WPILibRepositoriesPluginExtension(Project project) {
+    public WPILibRepositoriesPluginExtension(Project project) {
         String remoteBase = "https://maven.wpilib.org/artifactory/";
         String localBase = System.getProperty("user.home") + "/releases/maven/";
         String devExtension = "development";
@@ -36,13 +35,29 @@ public class WPILibRepositoriesPluginExtension {
     }
 
     private void addInternalLocalPublishing(Property<String> urlProperty, String name) {
-        m_project.getPluginManager().withPlugin(MavenPublishPlugin.class.getName(), plugin -> {
+        m_project.getPluginManager().withPlugin("maven-publish", plugin -> {
             PublishingExtension ext = m_project.getExtensions().getByType(PublishingExtension.class);
             ext.getRepositories().maven(repo -> {
                 repo.setName(name);
                 repo.setUrl(urlProperty);
             });
         });
+    }
+
+    public Property<String> getMavenLocalDevelopmentUrl() {
+        return mavenLocalDevelopmentUrl;
+    }
+
+    public Property<String> getMavenLocalReleaseUrl() {
+        return mavenLocalReleaseUrl;
+    }
+
+    public Property<String> getMavenRemoteDevelopmentUrl() {
+        return mavenRemoteDevelopmentUrl;
+    }
+
+    public Property<String> getMavenRemoteReleaseUrl() {
+        return mavenRemoteReleaseUrl;
     }
 
     public void addLocalDevelopmentPublishing() {
