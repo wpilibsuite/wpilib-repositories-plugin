@@ -15,8 +15,6 @@ public class WPILibRepositoriesPluginExtension {
     private final Property<String> mavenRemoteDevelopmentUrl;
     private final Property<String> mavenRemoteReleaseUrl;
 
-    private final Project m_project;
-
     @Inject
     public WPILibRepositoriesPluginExtension(Project project) {
         String remoteBase = "https://maven.wpilib.org/artifactory/";
@@ -31,12 +29,11 @@ public class WPILibRepositoriesPluginExtension {
         mavenRemoteDevelopmentUrl.set(remoteBase + devExtension);
         mavenRemoteReleaseUrl = project.getObjects().property(String.class);
         mavenRemoteReleaseUrl.set(remoteBase + releaseExtension);
-        m_project = project;
     }
 
-    private void addInternalLocalPublishing(Property<String> urlProperty, String name) {
-        m_project.getPluginManager().withPlugin("maven-publish", plugin -> {
-            PublishingExtension ext = m_project.getExtensions().getByType(PublishingExtension.class);
+    private void addInternalLocalPublishing(Project project, Property<String> urlProperty, String name) {
+        project.getPluginManager().withPlugin("maven-publish", plugin -> {
+            PublishingExtension ext = project.getExtensions().getByType(PublishingExtension.class);
             ext.getRepositories().maven(repo -> {
                 repo.setName(name);
                 repo.setUrl(urlProperty);
@@ -60,16 +57,16 @@ public class WPILibRepositoriesPluginExtension {
         return mavenRemoteReleaseUrl;
     }
 
-    public void addLocalDevelopmentPublishing() {
-        addInternalLocalPublishing(mavenLocalDevelopmentUrl, "Local Development Publishing");
+    public void addLocalDevelopmentPublishing(Project project) {
+        addInternalLocalPublishing(project, mavenLocalDevelopmentUrl, "Local Development Publishing");
     }
 
-    public void addLocalReleasePublishing() {
-        addInternalLocalPublishing(mavenLocalReleaseUrl, "Local Release Publishing");
+    public void addLocalReleasePublishing(Project project) {
+        addInternalLocalPublishing(project, mavenLocalReleaseUrl, "Local Release Publishing");
     }
 
-    private void addRepositoryInternal(Action<MavenArtifactRepository> configureAction, Property<String> url, String name) {
-        m_project.getRepositories().maven(repo -> {
+    private void addRepositoryInternal(Project project, Action<MavenArtifactRepository> configureAction, Property<String> url, String name) {
+        project.getRepositories().maven(repo -> {
             repo.setName(name);
             repo.setUrl(url);
             if (configureAction != null) {
@@ -78,35 +75,47 @@ public class WPILibRepositoriesPluginExtension {
         });
     }
 
-    public void addLocalReleaseRepository() {
-        addLocalReleaseRepository(null);
+    public void addLocalReleaseRepository(Project project) {
+        addLocalReleaseRepository(project, null);
     }
 
-    public void addLocalReleaseRepository(Action<MavenArtifactRepository> configureAction) {
-        addRepositoryInternal(configureAction, mavenLocalReleaseUrl, "Local Release");
+    public void addLocalReleaseRepository(Project project, Action<MavenArtifactRepository> configureAction) {
+        addRepositoryInternal(project, configureAction, mavenLocalReleaseUrl, "Local Release");
     }
 
-    public void addLocalDevelopmentRepository() {
-        addLocalDevelopmentRepository(null);
+    public void addLocalDevelopmentRepository(Project project) {
+        addLocalDevelopmentRepository(project, null);
     }
 
-    public void addLocalDevelopmentRepository(Action<MavenArtifactRepository> configureAction) {
-        addRepositoryInternal(configureAction, mavenLocalDevelopmentUrl, "Local Development");
+    public void addLocalDevelopmentRepository(Project project, Action<MavenArtifactRepository> configureAction) {
+        addRepositoryInternal(project, configureAction, mavenLocalDevelopmentUrl, "Local Development");
     }
 
-    public void addRemoteReleaseRepository() {
-        addRemoteReleaseRepository(null);
+    public void addRemoteReleaseRepository(Project project) {
+        addRemoteReleaseRepository(project, null);
     }
 
-    public void addRemoteReleaseRepository(Action<MavenArtifactRepository> configureAction) {
-        addRepositoryInternal(configureAction, mavenRemoteReleaseUrl, "Remote Release");
+    public void addRemoteReleaseRepository(Project project, Action<MavenArtifactRepository> configureAction) {
+        addRepositoryInternal(project, configureAction, mavenRemoteReleaseUrl, "Remote Release");
     }
 
-    public void addRemoteDevelopmentRepository() {
-        addRemoteDevelopmentRepository(null);
+    public void addRemoteDevelopmentRepository(Project project) {
+        addRemoteDevelopmentRepository(project, null);
     }
 
-    public void addRemoteDevelopmentRepository(Action<MavenArtifactRepository> configureAction) {
-        addRepositoryInternal(configureAction, mavenRemoteDevelopmentUrl, "Remote Development");
+    public void addRemoteDevelopmentRepository(Project project, Action<MavenArtifactRepository> configureAction) {
+        addRepositoryInternal(project, configureAction, mavenRemoteDevelopmentUrl, "Remote Development");
+    }
+
+    public void addAllDevelopmentRepositories(Project project) {
+        addLocalDevelopmentPublishing(project);
+        addLocalDevelopmentRepository(project);
+        addRemoteDevelopmentRepository(project);
+    }
+
+    public void addAllReleaseRepositories(Project project) {
+        addLocalReleasePublishing(project);
+        addLocalReleaseRepository(project);
+        addRemoteReleaseRepository(project);
     }
 }
