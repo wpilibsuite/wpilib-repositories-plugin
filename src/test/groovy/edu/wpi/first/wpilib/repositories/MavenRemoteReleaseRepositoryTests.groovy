@@ -78,8 +78,8 @@ class MavenRemoteReleaseRepositoryTests extends MavenTestBase {
     @Test
     public void 'mavenRemoteReleaseUrl defaults correctly'() {
         def project = createProjectInstance()
-        def path = new File(project.extensions.getByType(WPILibRepositoriesPluginExtension).mavenRemoteReleaseUrl.get()).absolutePath
-        def expectedPath = new File(remoteBase + releaseExtension).absolutePath
+        def path = project.extensions.getByType(WPILibRepositoriesPluginExtension).mavenRemoteReleaseUrl.get()
+        def expectedPath = remoteBase + releaseExtension
         assertTrue("Search string is $path, expected is $expectedPath", (boolean) path.equals(expectedPath))
     }
 }
