@@ -11,37 +11,37 @@ import java.nio.file.Files
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertTrue
 
-class MavenLocalDevelopmentRepositoryTests extends MavenTestBase {
+class MavenRemoteDevelopmentRepositoryTests extends MavenTestBase {
     @Test
-    public void 'Setting useLocalDevelopmentRepo works'() {
+    public void 'Setting useRemoteDevelopmentRepo works'() {
         def project = createProjectInstance()
 
         def ext = project.extensions.getByType(WPILibRepositoriesPluginExtension);
 
-        ext.addLocalDevelopmentRepository()
+        ext.addRemoteDevelopmentRepository()
 
         def repos = project.repositories
 
         assertEquals(1, repos.size())
 
         repos.all {
-            def path = new File(it.url.path).absolutePath
-            def expectedPath = new File(localBase + devExtension).absolutePath
+            def path = it.url.toString()
+            def expectedPath = remoteBase + devExtension
             assertTrue("Search string is $path, expected is $expectedPath", (boolean) path.equals(expectedPath))
         }
     }
 
     @Test
-    public void 'Setting useLocalDevelopmentRepo works with changed repo'() {
+    public void 'Setting useRemoteDevelopmentRepo works with changed repo'() {
         def project = createProjectInstance()
 
         def ext = project.extensions.getByType(WPILibRepositoriesPluginExtension);
 
         def expectedPath = "https://localhost/test"
 
-        ext.mavenLocalDevelopmentUrl.set(expectedPath)
+        ext.mavenRemoteDevelopmentUrl.set(expectedPath)
 
-        ext.addLocalDevelopmentRepository()
+        ext.addRemoteDevelopmentRepository()
 
         def repos = project.repositories
 
@@ -54,16 +54,16 @@ class MavenLocalDevelopmentRepositoryTests extends MavenTestBase {
     }
 
     @Test
-    public void 'Setting useLocalDevelopmentRepo works with changed repo lazy'() {
+    public void 'Setting useRemoteDevelopmentRepo works with changed repo lazy'() {
         def project = createProjectInstance()
 
         def ext = project.extensions.getByType(WPILibRepositoriesPluginExtension);
 
         def expectedPath = "https://localhost/test"
 
-        ext.addLocalDevelopmentRepository()
+        ext.addRemoteDevelopmentRepository()
 
-        ext.mavenLocalDevelopmentUrl.set(expectedPath)
+        ext.mavenRemoteDevelopmentUrl.set(expectedPath)
 
         def repos = project.repositories
 
@@ -76,10 +76,10 @@ class MavenLocalDevelopmentRepositoryTests extends MavenTestBase {
     }
 
     @Test
-    public void 'mavenLocalDevelopmentUrl defaults correctly'() {
+    public void 'mavenRemoteDevelopmentUrl defaults correctly'() {
         def project = createProjectInstance()
-        def path = new File(project.extensions.getByType(WPILibRepositoriesPluginExtension).mavenLocalDevelopmentUrl.get()).absolutePath
-        def expectedPath = new File(localBase + devExtension).absolutePath
+        def path = project.extensions.getByType(WPILibRepositoriesPluginExtension).mavenRemoteDevelopmentUrl.get()
+        def expectedPath = remoteBase + devExtension
         assertTrue("Search string is $path, expected is $expectedPath", (boolean) path.equals(expectedPath))
     }
 }

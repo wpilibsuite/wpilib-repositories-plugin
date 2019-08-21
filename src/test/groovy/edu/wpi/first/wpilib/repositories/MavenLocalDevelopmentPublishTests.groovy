@@ -49,14 +49,6 @@ class MavenLocalDevelopmentPublishTests extends MavenTestBase {
     }
 
     @Test
-    public void 'mavenLocalDevelopmentUrl defaults correctly'() {
-        def project = createProjectInstance()
-        def path = new File(project.extensions.getByType(WPILibRepositoriesPluginExtension).mavenLocalDevelopmentUrl.get()).absolutePath
-        def expectedPath = new File(localBase + devExtension).absolutePath
-        assertTrue("Search string is $path, expected is $expectedPath", (boolean) path.equals(expectedPath))
-    }
-
-    @Test
     public void 'Setting useLocalDevelopmentPublish works after manualSet'() {
         def project = createProjectInstance()
 
