@@ -18,7 +18,7 @@ class MavenRemoteReleaseRepositoryTests extends MavenTestBase {
 
         def ext = project.extensions.getByType(WPILibRepositoriesPluginExtension);
 
-        ext.addRemoteReleaseRepository()
+        ext.addRemoteReleaseRepository(project)
 
         def repos = project.repositories
 
@@ -41,7 +41,7 @@ class MavenRemoteReleaseRepositoryTests extends MavenTestBase {
 
         ext.mavenRemoteReleaseUrl.set(expectedPath)
 
-        ext.addRemoteReleaseRepository()
+        ext.addRemoteReleaseRepository(project)
 
         def repos = project.repositories
 
@@ -61,7 +61,7 @@ class MavenRemoteReleaseRepositoryTests extends MavenTestBase {
 
         def expectedPath = "https://localhost/test"
 
-        ext.addRemoteReleaseRepository()
+        ext.addRemoteReleaseRepository(project)
 
         ext.mavenRemoteReleaseUrl.set(expectedPath)
 

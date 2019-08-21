@@ -18,7 +18,7 @@ class MavenLocalDevelopmentRepositoryTests extends MavenTestBase {
 
         def ext = project.extensions.getByType(WPILibRepositoriesPluginExtension);
 
-        ext.addLocalDevelopmentRepository()
+        ext.addLocalDevelopmentRepository(project)
 
         def repos = project.repositories
 
@@ -41,7 +41,7 @@ class MavenLocalDevelopmentRepositoryTests extends MavenTestBase {
 
         ext.mavenLocalDevelopmentUrl.set(expectedPath)
 
-        ext.addLocalDevelopmentRepository()
+        ext.addLocalDevelopmentRepository(project)
 
         def repos = project.repositories
 
@@ -61,7 +61,7 @@ class MavenLocalDevelopmentRepositoryTests extends MavenTestBase {
 
         def expectedPath = "https://localhost/test"
 
-        ext.addLocalDevelopmentRepository()
+        ext.addLocalDevelopmentRepository(project)
 
         ext.mavenLocalDevelopmentUrl.set(expectedPath)
 

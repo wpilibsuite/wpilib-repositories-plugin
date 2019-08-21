@@ -20,7 +20,7 @@ class MavenLocalReleasePublishTests extends MavenTestBase {
         def project = createProjectInstance()
 
         project.pluginManager.apply 'maven-publish'
-        project.extensions.getByType(WPILibRepositoriesPluginExtension).addLocalReleasePublishing()
+        project.extensions.getByType(WPILibRepositoriesPluginExtension).addLocalReleasePublishing(project)
 
         def repos = project.extensions.getByType(PublishingExtension).repositories
         assertEquals(1, repos.size())
@@ -35,7 +35,7 @@ class MavenLocalReleasePublishTests extends MavenTestBase {
     public void 'Setting useLocalReleasePublish works before applied publish extension'() {
         def project = createProjectInstance()
 
-        project.extensions.getByType(WPILibRepositoriesPluginExtension).addLocalReleasePublishing()
+        project.extensions.getByType(WPILibRepositoriesPluginExtension).addLocalReleasePublishing(project)
 
         project.pluginManager.apply 'maven-publish'
 
@@ -65,7 +65,7 @@ class MavenLocalReleasePublishTests extends MavenTestBase {
         project.pluginManager.apply 'maven-publish'
 
         project.extensions.getByType(WPILibRepositoriesPluginExtension).mavenLocalReleaseUrl.set(expectedPath)
-        project.extensions.getByType(WPILibRepositoriesPluginExtension).addLocalReleasePublishing()
+        project.extensions.getByType(WPILibRepositoriesPluginExtension).addLocalReleasePublishing(project)
 
         def repos = project.extensions.getByType(PublishingExtension).repositories
         assertEquals(1, repos.size())
