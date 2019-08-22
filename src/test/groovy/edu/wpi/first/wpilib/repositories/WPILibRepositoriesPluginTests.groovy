@@ -15,11 +15,6 @@ import static org.junit.Assert.assertTrue
  * Tests for the wpilib repositories plugin
  */
 class WPILibRepositoriesPluginTests {
-    String remoteBase = "https://maven.wpilib.org/artifactory/";
-    String localBase = System.getProperty("user.home") + "/releases/maven/";
-    String devExtension = "development";
-    String releaseExtension = "release";
-
     @Test
     public void 'Applying plugin creates extension'() {
         def project = createProjectInstance()
