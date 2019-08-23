@@ -17,7 +17,7 @@ public class WPILibRepositoriesPluginExtension {
 
     @Inject
     public WPILibRepositoriesPluginExtension(Project project) {
-        String remoteBase = "https://maven.wpilib.org/artifactory/";
+        String remoteBase = "https://frcmaven.wpi.edu/artifactory/";
         String localBase = System.getProperty("user.home") + "/releases/maven/";
         String devExtension = "development";
         String releaseExtension = "release";

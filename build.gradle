@@ -15,7 +15,7 @@ repositories {
     jcenter()
 }
 
-version = '2020.0'
+version = '2020.1'
 group = 'edu.wpi.first.wpilib.repositories'
 
 pluginBundle {
