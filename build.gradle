@@ -12,7 +12,7 @@ dependencies {
 }
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 version = '2020.1'
