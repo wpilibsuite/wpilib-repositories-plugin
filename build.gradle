@@ -1,46 +1,54 @@
 plugins {
     id 'java-gradle-plugin'
     id 'maven-publish'
-    id 'java'
     id 'groovy'
-    id "com.gradle.plugin-publish" version "0.10.1"
+    id "com.gradle.plugin-publish" version "1.2.1"
 }
 
+version = '2024.0'
+group = 'edu.wpi.first.wpilib.repositories'
+
+if (project.hasProperty('publishVersion')) {
+    version = project.publishVersion
+}
 
 dependencies {
-    testCompile 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.12'
 }
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
-version = '2020.2'
-group = 'edu.wpi.first.wpilib.repositories'
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
 
-pluginBundle {
-    website = 'https://github.com/wpilibsuite/wpilib-repositories-plugin'
-    vcsUrl = 'https://github.com/wpilibsuite/wpilib-repositories-plugin'
-    description = 'This plugin provides maven remote settings for the WPILib Suite FRC projects.'
-    tags = ['maven', 'frc', 'wpilib']
+tasks.withType(Javadoc) {
+    options.addBooleanOption('Xdoclint:all,-missing', true)
+}
 
-    plugins {
-        wpilibRepositoriesPlugin {
-            id = 'edu.wpi.first.wpilib.repositories.WPILibRepositoriesPlugin'
-            displayName = 'WPILib Repositories Plugin'
-        }
-    }
+tasks.withType(JavaCompile) {
+    options.compilerArgs << '-Xlint:unchecked'
+    options.deprecation = true
 }
 
 gradlePlugin {
+    website = 'https://github.com/wpilibsuite/wpilib-repositories-plugin'
+    vcsUrl = 'https://github.com/wpilibsuite/wpilib-repositories-plugin'
+
     plugins {
-        wpilibRepositoriesPlugin {
+        WpilibTools {
             id = 'edu.wpi.first.wpilib.repositories.WPILibRepositoriesPlugin'
             implementationClass = 'edu.wpi.first.wpilib.repositories.WPILibRepositoriesPlugin'
+            displayName = 'WPILib Repositories Plugin'
+            description = 'This plugin provides maven remote settings for the WPILib Suite FRC projects.'
+            tags = ['maven', 'frc', 'wpilib', 'repositories']
         }
     }
 }
 
 wrapper {
-    gradleVersion = '5.4.1'
+    gradleVersion = '8.5'
 }
