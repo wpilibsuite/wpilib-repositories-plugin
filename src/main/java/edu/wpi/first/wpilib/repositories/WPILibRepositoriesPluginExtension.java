@@ -58,11 +58,11 @@ public class WPILibRepositoriesPluginExtension {
     }
 
     public void addLocalDevelopmentPublishing(Project project) {
-        addInternalLocalPublishing(project, mavenLocalDevelopmentUrl, "Local Development Publishing");
+        addInternalLocalPublishing(project, mavenLocalDevelopmentUrl, "Local-Development-Publishing");
     }
 
     public void addLocalReleasePublishing(Project project) {
-        addInternalLocalPublishing(project, mavenLocalReleaseUrl, "Local Release Publishing");
+        addInternalLocalPublishing(project, mavenLocalReleaseUrl, "Local-Release-Publishing");
     }
 
     private void addRepositoryInternal(Project project, Action<MavenArtifactRepository> configureAction, Property<String> url, String name) {
@@ -80,7 +80,7 @@ public class WPILibRepositoriesPluginExtension {
     }
 
     public void addLocalReleaseRepository(Project project, Action<MavenArtifactRepository> configureAction) {
-        addRepositoryInternal(project, configureAction, mavenLocalReleaseUrl, "Local Release");
+        addRepositoryInternal(project, configureAction, mavenLocalReleaseUrl, "Local-Release");
     }
 
     public void addLocalDevelopmentRepository(Project project) {
@@ -88,7 +88,7 @@ public class WPILibRepositoriesPluginExtension {
     }
 
     public void addLocalDevelopmentRepository(Project project, Action<MavenArtifactRepository> configureAction) {
-        addRepositoryInternal(project, configureAction, mavenLocalDevelopmentUrl, "Local Development");
+        addRepositoryInternal(project, configureAction, mavenLocalDevelopmentUrl, "Local-Development");
     }
 
     public void addRemoteReleaseRepository(Project project) {
@@ -96,7 +96,7 @@ public class WPILibRepositoriesPluginExtension {
     }
 
     public void addRemoteReleaseRepository(Project project, Action<MavenArtifactRepository> configureAction) {
-        addRepositoryInternal(project, configureAction, mavenRemoteReleaseUrl, "Remote Release");
+        addRepositoryInternal(project, configureAction, mavenRemoteReleaseUrl, "Remote-Release");
     }
 
     public void addRemoteDevelopmentRepository(Project project) {
@@ -104,7 +104,7 @@ public class WPILibRepositoriesPluginExtension {
     }
 
     public void addRemoteDevelopmentRepository(Project project, Action<MavenArtifactRepository> configureAction) {
-        addRepositoryInternal(project, configureAction, mavenRemoteDevelopmentUrl, "Remote Development");
+        addRepositoryInternal(project, configureAction, mavenRemoteDevelopmentUrl, "Remote-Development");
     }
 
     public void addAllDevelopmentRepositories(Project project) {
