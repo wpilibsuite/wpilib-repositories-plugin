@@ -14,6 +14,7 @@ public class WPILibRepositoriesPluginExtension {
     private final Property<String> mavenLocalReleaseUrl;
     private final Property<String> mavenRemoteDevelopmentUrl;
     private final Property<String> mavenRemoteReleaseUrl;
+    private final Property<String> repoSuffix;
 
     @Inject
     public WPILibRepositoriesPluginExtension(Project project) {
@@ -21,14 +22,20 @@ public class WPILibRepositoriesPluginExtension {
         String localBase = System.getProperty("user.home") + "/releases/maven/";
         String devExtension = "development";
         String releaseExtension = "release";
+        repoSuffix = project.getObjects().property(String.class);
+        repoSuffix.set("");
         mavenLocalDevelopmentUrl = project.getObjects().property(String.class);
         mavenLocalDevelopmentUrl.set(localBase + devExtension);
         mavenLocalReleaseUrl = project.getObjects().property(String.class);
         mavenLocalReleaseUrl.set(localBase + releaseExtension);
         mavenRemoteDevelopmentUrl = project.getObjects().property(String.class);
-        mavenRemoteDevelopmentUrl.set(remoteBase + devExtension);
+        mavenRemoteDevelopmentUrl.set(project.provider(() -> {
+            return remoteBase + devExtension + repoSuffix.get();
+        }));
         mavenRemoteReleaseUrl = project.getObjects().property(String.class);
-        mavenRemoteReleaseUrl.set(remoteBase + releaseExtension);
+        mavenRemoteReleaseUrl.set(project.provider(() -> {
+            return remoteBase + releaseExtension + repoSuffix.get();
+        }));
     }
 
     private void addInternalLocalPublishing(Project project, Property<String> urlProperty, String name) {
@@ -39,6 +46,18 @@ public class WPILibRepositoriesPluginExtension {
                 repo.setUrl(urlProperty);
             });
         });
+    }
+
+    public void useExistingRepos() {
+        repoSuffix.set("");
+    }
+
+    public void use2027Repos() {
+        repoSuffix.set("-2027");
+    }
+
+    public Property<String> getRepoSuffix() {
+        return repoSuffix;
     }
 
     public Property<String> getMavenLocalDevelopmentUrl() {
@@ -65,7 +84,8 @@ public class WPILibRepositoriesPluginExtension {
         addInternalLocalPublishing(project, mavenLocalReleaseUrl, "Local-Release-Publishing");
     }
 
-    private void addRepositoryInternal(Project project, Action<MavenArtifactRepository> configureAction, Property<String> url, String name) {
+    private void addRepositoryInternal(Project project, Action<MavenArtifactRepository> configureAction,
+            Property<String> url, String name) {
         project.getRepositories().maven(repo -> {
             repo.setName(name);
             repo.setUrl(url);
