@@ -5,8 +5,8 @@ plugins {
     id "com.gradle.plugin-publish" version "1.3.0"
 }
 
-version = '2025.0'
-group = 'edu.wpi.first.wpilib.repositories'
+version = '2027.0.0'
+group = 'org.wpilib'
 
 if (project.hasProperty('publishVersion')) {
     version = project.publishVersion
@@ -40,8 +40,8 @@ gradlePlugin {
 
     plugins {
         WpilibTools {
-            id = 'edu.wpi.first.wpilib.repositories.WPILibRepositoriesPlugin'
-            implementationClass = 'edu.wpi.first.wpilib.repositories.WPILibRepositoriesPlugin'
+            id = 'org.wpilib.WPILibRepositoriesPlugin'
+            implementationClass = 'org.wpilib.repositories.WPILibRepositoriesPlugin'
             displayName = 'WPILib Repositories Plugin'
             description = 'This plugin provides maven remote settings for the WPILib Suite FRC projects.'
             tags = ['maven', 'frc', 'wpilib', 'repositories']
@@ -50,5 +50,5 @@ gradlePlugin {
 }
 
 wrapper {
-    gradleVersion = '8.11'
+    gradleVersion = '9.2.0'
 }

@@ -1,4 +1,4 @@
-package edu.wpi.first.wpilib.repositories
+package org.wpilib.repositories
 
 import org.gradle.api.Project
 import org.gradle.api.publish.PublishingExtension
@@ -11,14 +11,14 @@ import java.nio.file.Files
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertTrue
 
-class MavenRemoteDevelopmentRepositoryTests extends MavenTestBase {
+class MavenRemoteReleaseRepositoryTests extends MavenTestBase {
     @Test
-    public void 'Setting useRemoteDevelopmentRepo works'() {
+    public void 'Setting useRemoteReleaseRepo works'() {
         def project = createProjectInstance()
 
         def ext = project.extensions.getByType(WPILibRepositoriesPluginExtension);
 
-        ext.addRemoteDevelopmentRepository(project)
+        ext.addRemoteReleaseRepository(project)
 
         def repos = project.repositories
 
@@ -26,44 +26,22 @@ class MavenRemoteDevelopmentRepositoryTests extends MavenTestBase {
 
         repos.all {
             def path = it.url.toString()
-            def expectedPath = remoteBase + devExtension
+            def expectedPath = remoteBase + releaseExtension
             assertTrue("Search string is $path, expected is $expectedPath", (boolean) path.equals(expectedPath))
         }
     }
 
     @Test
-    public void 'Setting useRemoteDevelopmentRepo works with changed repo'() {
-        def project = createProjectInstance()
-
-        def ext = project.extensions.getByType(WPILibRepositoriesPluginExtension);
-
-        def expectedPath = "https://localhost/test"
-
-        ext.mavenRemoteDevelopmentUrl.set(expectedPath)
-
-        ext.addRemoteDevelopmentRepository(project)
-
-        def repos = project.repositories
-
-        assertEquals(1, repos.size())
-
-        repos.all {
-            def path = it.url.toString()
-            assertTrue("Search string is $path, expected is $expectedPath", (boolean) path.equals(expectedPath))
-        }
-    }
-
-    @Test
-    public void 'Setting useRemoteDevelopmentRepo works with changed repo lazy'() {
+    public void 'Setting useRemoteReleaseRepo works with changed repo'() {
         def project = createProjectInstance()
 
         def ext = project.extensions.getByType(WPILibRepositoriesPluginExtension);
 
         def expectedPath = "https://localhost/test"
 
-        ext.addRemoteDevelopmentRepository(project)
+        ext.mavenRemoteReleaseUrl.set(expectedPath)
 
-        ext.mavenRemoteDevelopmentUrl.set(expectedPath)
+        ext.addRemoteReleaseRepository(project)
 
         def repos = project.repositories
 
@@ -76,10 +54,32 @@ class MavenRemoteDevelopmentRepositoryTests extends MavenTestBase {
     }
 
     @Test
-    public void 'mavenRemoteDevelopmentUrl defaults correctly'() {
+    public void 'Setting useRemoteReleaseRepo works with changed repo lazy'() {
         def project = createProjectInstance()
-        def path = project.extensions.getByType(WPILibRepositoriesPluginExtension).mavenRemoteDevelopmentUrl.get()
-        def expectedPath = remoteBase + devExtension
+
+        def ext = project.extensions.getByType(WPILibRepositoriesPluginExtension);
+
+        def expectedPath = "https://localhost/test"
+
+        ext.addRemoteReleaseRepository(project)
+
+        ext.mavenRemoteReleaseUrl.set(expectedPath)
+
+        def repos = project.repositories
+
+        assertEquals(1, repos.size())
+
+        repos.all {
+            def path = it.url.toString()
+            assertTrue("Search string is $path, expected is $expectedPath", (boolean) path.equals(expectedPath))
+        }
+    }
+
+    @Test
+    public void 'mavenRemoteReleaseUrl defaults correctly'() {
+        def project = createProjectInstance()
+        def path = project.extensions.getByType(WPILibRepositoriesPluginExtension).mavenRemoteReleaseUrl.get()
+        def expectedPath = remoteBase + releaseExtension
         assertTrue("Search string is $path, expected is $expectedPath", (boolean) path.equals(expectedPath))
     }
 }

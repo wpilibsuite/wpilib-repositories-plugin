@@ -1,4 +1,4 @@
-package edu.wpi.first.wpilib.repositories
+package org.wpilib.repositories
 
 import org.gradle.api.Project
 import org.gradle.api.publish.PublishingExtension
@@ -14,28 +14,28 @@ import static org.junit.Assert.assertTrue
 /**
  * Tests for the wpilib repositories plugin
  */
-class MavenLocalReleasePublishTests extends MavenTestBase {
+class MavenLocalDevelopmentPublishTests extends MavenTestBase {
     @Test
-    public void 'Setting useLocalReleasePublish works after applied publish extension'() {
+    public void 'Setting useLocalDevelopmentPublish works after applied publish extension'() {
         def project = createProjectInstance()
 
         project.pluginManager.apply 'maven-publish'
-        project.extensions.getByType(WPILibRepositoriesPluginExtension).addLocalReleasePublishing(project)
+        project.extensions.getByType(WPILibRepositoriesPluginExtension).addLocalDevelopmentPublishing(project)
 
         def repos = project.extensions.getByType(PublishingExtension).repositories
         assertEquals(1, repos.size())
         repos.all {
             def path = new File(it.url.path).absolutePath
-            def expectedPath = new File(localBase + releaseExtension).absolutePath
+            def expectedPath = new File(localBase + devExtension).absolutePath
             assertTrue("Search string is $path, expected is $expectedPath", (boolean) path.equals(expectedPath))
         }
     }
 
     @Test
-    public void 'Setting useLocalReleasePublish works before applied publish extension'() {
+    public void 'Setting useLocalDevelopmentPublish works before applied publish extension'() {
         def project = createProjectInstance()
 
-        project.extensions.getByType(WPILibRepositoriesPluginExtension).addLocalReleasePublishing(project)
+        project.extensions.getByType(WPILibRepositoriesPluginExtension).addLocalDevelopmentPublishing(project)
 
         project.pluginManager.apply 'maven-publish'
 
@@ -43,29 +43,21 @@ class MavenLocalReleasePublishTests extends MavenTestBase {
         assertEquals(1, repos.size())
         repos.all {
             def path = new File(it.url.path).absolutePath
-            def expectedPath = new File(localBase + releaseExtension).absolutePath
+            def expectedPath = new File(localBase + devExtension).absolutePath
             assertTrue("Search string is $path, expected is $expectedPath", (boolean) path.equals(expectedPath))
         }
     }
 
     @Test
-    public void 'mavenLocalReleaseUrl defaults correctly'() {
-        def project = createProjectInstance()
-        def path = new File(project.extensions.getByType(WPILibRepositoriesPluginExtension).mavenLocalReleaseUrl.get()).absolutePath
-        def expectedPath = new File(localBase + releaseExtension).absolutePath
-        assertTrue("Search string is $path, expected is $expectedPath", (boolean) path.equals(expectedPath))
-    }
-
-    @Test
-    public void 'Setting useLocalReleasePublish works after manualSet'() {
+    public void 'Setting useLocalDevelopmentPublish works after manualSet'() {
         def project = createProjectInstance()
 
         def expectedPath = "https://localhost/test"
 
         project.pluginManager.apply 'maven-publish'
 
-        project.extensions.getByType(WPILibRepositoriesPluginExtension).mavenLocalReleaseUrl.set(expectedPath)
-        project.extensions.getByType(WPILibRepositoriesPluginExtension).addLocalReleasePublishing(project)
+        project.extensions.getByType(WPILibRepositoriesPluginExtension).mavenLocalDevelopmentUrl.set(expectedPath)
+        project.extensions.getByType(WPILibRepositoriesPluginExtension).addLocalDevelopmentPublishing(project)
 
         def repos = project.extensions.getByType(PublishingExtension).repositories
         assertEquals(1, repos.size())
