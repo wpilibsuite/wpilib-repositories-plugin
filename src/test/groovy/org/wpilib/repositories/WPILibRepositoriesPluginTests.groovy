@@ -1,4 +1,4 @@
-package edu.wpi.first.wpilib.repositories
+package org.wpilib.repositories
 
 import org.gradle.api.Project
 import org.gradle.api.publish.PublishingExtension
@@ -24,7 +24,7 @@ class WPILibRepositoriesPluginTests {
 
     static def createProjectInstance() {
         def project = ProjectBuilder.builder().build()
-        project.pluginManager.apply 'edu.wpi.first.wpilib.repositories.WPILibRepositoriesPlugin'
+        project.pluginManager.apply 'org.wpilib.WPILibRepositoriesPlugin'
 
         return project
     }

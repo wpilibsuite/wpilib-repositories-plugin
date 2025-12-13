@@ -1,4 +1,4 @@
-package edu.wpi.first.wpilib.repositories;
+package org.wpilib.repositories;
 
 import javax.inject.Inject;
 

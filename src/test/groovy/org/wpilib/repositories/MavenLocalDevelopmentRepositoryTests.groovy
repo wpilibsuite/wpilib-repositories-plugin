@@ -1,4 +1,4 @@
-package edu.wpi.first.wpilib.repositories
+package org.wpilib.repositories
 
 import org.gradle.api.Project
 import org.gradle.api.publish.PublishingExtension

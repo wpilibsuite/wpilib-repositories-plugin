@@ -1,4 +1,4 @@
-package edu.wpi.first.wpilib.repositories
+package org.wpilib.repositories
 
 import org.gradle.api.Project
 import org.gradle.api.publish.PublishingExtension
@@ -11,37 +11,37 @@ import java.nio.file.Files
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertTrue
 
-class MavenLocalReleaseRepositoryTests extends MavenTestBase {
+class MavenRemoteDevelopmentRepositoryTests extends MavenTestBase {
     @Test
-    public void 'Setting useLocalReleaseRepo works'() {
+    public void 'Setting useRemoteDevelopmentRepo works'() {
         def project = createProjectInstance()
 
         def ext = project.extensions.getByType(WPILibRepositoriesPluginExtension);
 
-        ext.addLocalReleaseRepository(project)
+        ext.addRemoteDevelopmentRepository(project)
 
         def repos = project.repositories
 
         assertEquals(1, repos.size())
 
         repos.all {
-            def path = new File(it.url.path).absolutePath
-            def expectedPath = new File(localBase + releaseExtension).absolutePath
+            def path = it.url.toString()
+            def expectedPath = remoteBase + devExtension
             assertTrue("Search string is $path, expected is $expectedPath", (boolean) path.equals(expectedPath))
         }
     }
 
     @Test
-    public void 'Setting useLocalReleaseRepo works with changed repo'() {
+    public void 'Setting useRemoteDevelopmentRepo works with changed repo'() {
         def project = createProjectInstance()
 
         def ext = project.extensions.getByType(WPILibRepositoriesPluginExtension);
 
         def expectedPath = "https://localhost/test"
 
-        ext.mavenLocalReleaseUrl.set(expectedPath)
+        ext.mavenRemoteDevelopmentUrl.set(expectedPath)
 
-        ext.addLocalReleaseRepository(project)
+        ext.addRemoteDevelopmentRepository(project)
 
         def repos = project.repositories
 
@@ -54,16 +54,16 @@ class MavenLocalReleaseRepositoryTests extends MavenTestBase {
     }
 
     @Test
-    public void 'Setting useLocalReleaseRepo works with changed repo lazy'() {
+    public void 'Setting useRemoteDevelopmentRepo works with changed repo lazy'() {
         def project = createProjectInstance()
 
         def ext = project.extensions.getByType(WPILibRepositoriesPluginExtension);
 
         def expectedPath = "https://localhost/test"
 
-        ext.addLocalReleaseRepository(project)
+        ext.addRemoteDevelopmentRepository(project)
 
-        ext.mavenLocalReleaseUrl.set(expectedPath)
+        ext.mavenRemoteDevelopmentUrl.set(expectedPath)
 
         def repos = project.repositories
 
@@ -76,10 +76,10 @@ class MavenLocalReleaseRepositoryTests extends MavenTestBase {
     }
 
     @Test
-    public void 'mavenLocalReleaseUrl defaults correctly'() {
+    public void 'mavenRemoteDevelopmentUrl defaults correctly'() {
         def project = createProjectInstance()
-        def path = new File(project.extensions.getByType(WPILibRepositoriesPluginExtension).mavenLocalReleaseUrl.get()).absolutePath
-        def expectedPath = new File(localBase + releaseExtension).absolutePath
+        def path = project.extensions.getByType(WPILibRepositoriesPluginExtension).mavenRemoteDevelopmentUrl.get()
+        def expectedPath = remoteBase + devExtension
         assertTrue("Search string is $path, expected is $expectedPath", (boolean) path.equals(expectedPath))
     }
 }
